@@ -1,8 +1,13 @@
 #!/bin/bash
 # Pro Bash scriptin time 
 
+# Make sure ./libr exists
 
-# Make the library if not already compiled
+if [ ! -d ./libr ]; then
+    mkdir libr
+fi
+
+# Make the library
 
 gcc -c src/ssbl.c -o build/ssbl.o
 ar rcs libr/libssbl.a build/ssbl.o
