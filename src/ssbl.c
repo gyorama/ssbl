@@ -66,6 +66,32 @@ inline bool add(int *stack) {
         puts("Not enough arguments");
         return true;
     }
-    push(stack, stack[stack[0]] + stack[stack[0]-1]); // This is so unreadable but fuck it
-    
+    int result = stack[stack[0]] + stack[stack[0]-1];
+    stack[0] -= 2;
+    push(stack, result); // This is so unreadable but fuck it
+    return false;
+}
+
+// That's literally add copypasted but with a -
+inline bool subtract(int *stack) {
+    if (stack[0] < 2) {
+        puts("Not enough arguments");
+        return true;
+    }
+    int result = stack[stack[0]] - stack[stack[0]-1];
+    stack[0] -= 2;
+    push(stack, result);
+    return false;
+}
+
+// Todo: make work
+inline bool divide(int *stack) {
+    if (stack[0] < 2) {
+        puts("Not enough arguments");
+        return true;
+    }
+    int result = (int)stack[stack[0]] / stack[stack[0]-1]; // Only full divisions for now
+    stack[0] -= 2;
+    push(stack, (int)result); // double casting because wht the fuck not
+    return false;
 }

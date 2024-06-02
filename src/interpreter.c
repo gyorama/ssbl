@@ -60,9 +60,15 @@ int main(int argc, const char *argv[]) {
             ret = isEmpty(stack);
         } else if (strcasecmp(command, "isfull") == 0) {
             ret = isFull(stack);
-        } else if (strcasecmp(command, "sub") == 0) {}
-        
-        
+        } else if (strcasecmp(command, "clear") == 0) {
+            ret = clear(stack);
+        } else if (strcasecmp(command, "add") == 0) {
+            ret = add(stack);
+        } else if (strcasecmp(command, "sub") == 0) {
+            ret = subtract(stack);
+        } /* else if (strcasecmp(command, "div") == 0) {
+            ret = subtract(stack);
+        } */
     }
 
     fclose(source);

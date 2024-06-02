@@ -10,7 +10,7 @@ bool isFull(int *stack);
 bool clear(int *stack);
 
 // Math
-bool add();
-bool subtract();
-bool divide();
-bool multiply();
+bool add(int *stack);
+bool subtract(int *stack);
+bool divide(int *stack);
+bool multiply(int *stack);
