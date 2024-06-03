@@ -120,6 +120,9 @@ inline bool loop(int *stack, int times, FILE *source) {
     
     
     while (times != 0) {
+        fseek(source, loopBeginning, SEEK_SET);
+        memset(command, 0, 200);
+        --times;
         // Never fucking mind
         while (fscanf(source, "%s", &command) != EOF && strcasecmp(command, "end") != 0) {
             if (strcasecmp(command, "push") == 0) {
@@ -172,9 +175,6 @@ inline bool loop(int *stack, int times, FILE *source) {
                 }
             }
         }
-        fseek(source, loopBeginning, SEEK_SET);
-        memset(command, 0, 200);
-        --times;
     }
     return false;
 }
