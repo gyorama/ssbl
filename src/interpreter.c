@@ -66,9 +66,22 @@ int main(int argc, const char *argv[]) {
             ret = add(stack);
         } else if (strcasecmp(command, "sub") == 0) {
             ret = subtract(stack);
-        } /* else if (strcasecmp(command, "div") == 0) {
-            ret = subtract(stack);
-        } */
+        } else if (strcasecmp(command, "div") == 0) {
+            ret = divide(stack);
+        } else if (strcasecmp(command, "mul") == 0) {
+            ret = multiply(stack);
+        } else if (strcasecmp(command, "times")) { // back to fuckass code
+            fscanf(source, "%s", valStr);
+            val = strtol(valStr, &endPtr, 10);
+            // Make sure this is a valid integer
+            if (*endPtr == '\0') {
+                ret = push(stack, val);
+                // if function failed
+                if (ret) {
+                    break;
+                }
+            }
+        }
     }
 
     fclose(source);

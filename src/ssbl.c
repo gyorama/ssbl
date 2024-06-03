@@ -90,8 +90,19 @@ inline bool divide(int *stack) {
         puts("Not enough arguments");
         return true;
     }
-    int result = (int)stack[stack[0]] / stack[stack[0]-1]; // Only full divisions for now
+    int result = stack[stack[0]] / stack[stack[0]-1]; // Only full divisions for now
     stack[0] -= 2;
-    push(stack, (int)result); // double casting because wht the fuck not
+    push(stack, result);
+    return false;
+}
+
+inline bool multiply(int *stack) {
+    if (stack[0] < 2) {
+        puts("Not enough arguments");
+        return true;
+    }
+    int result = stack[stack[0]] * stack[stack[0]-1]; // Only full divisions for now
+    stack[0] -= 2;
+    push(stack, result);
     return false;
 }
