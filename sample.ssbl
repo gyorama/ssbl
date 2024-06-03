@@ -1,5 +1,5 @@
 push 2
 
-times 1
+times 4
     top
 end

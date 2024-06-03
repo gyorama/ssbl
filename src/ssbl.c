@@ -110,7 +110,7 @@ inline bool multiply(int *stack) {
 // Felt bad about making nested loops so I made it a function
 // Todo: Make this shit work
 inline bool loop(int *stack, int times, FILE *source) {
-    FILE *loopBeginning = source;
+    int loopBeginning = ftell(source);
     char valStr[13];
     int val;
     char *endPtr;
@@ -121,10 +121,60 @@ inline bool loop(int *stack, int times, FILE *source) {
     
     while (times != 0) {
         // Never fucking mind
-        while (fscanf(source, "%s", &command) != EOF || strcasecmp(command, "end") != 0) {
-            puts("Repeat");
+        while (fscanf(source, "%s", &command) != EOF && strcasecmp(command, "end") != 0) {
+            if (strcasecmp(command, "push") == 0) {
+            fscanf(source, "%s", valStr);
+            val = strtol(valStr, &endPtr, 10);
+            // Make sure this is a valid integer
+            if (*endPtr == '\0') {
+                ret = push(stack, val);
+                // if function failed
+                if (ret) {
+                    break;
+                }
+                
+            } else {
+                puts("Invalid integer");
+            }
+        // Code gets better from here
+            } else if (strcasecmp(command, "pop") == 0) {
+                ret = pop(stack);
+                if (ret) {
+                    break;
+                }
+            } else if (strcasecmp(command, "top") == 0) {
+                ret = top(stack);
+                if (ret) {
+                    break;
+                }
+            } else if (strcasecmp(command, "isempty") == 0) {
+                ret = isEmpty(stack);
+            } else if (strcasecmp(command, "isfull") == 0) {
+                ret = isFull(stack);
+            } else if (strcasecmp(command, "clear") == 0) {
+                ret = clear(stack);
+            } else if (strcasecmp(command, "add") == 0) {
+                ret = add(stack);
+            } else if (strcasecmp(command, "sub") == 0) {
+                ret = subtract(stack);
+            } else if (strcasecmp(command, "div") == 0) {
+                ret = divide(stack);
+            } else if (strcasecmp(command, "mul") == 0) {
+                ret = multiply(stack);
+            } else if (strcasecmp(command, "times") == 0) {
+                fscanf(source, "%s", valStr);
+                val = strtol(valStr, &endPtr, 10);
+                if (*endPtr == '\0') {
+                    ret = loop(stack, val, source);
+                    if (ret) {
+                        break;
+                    }
+                }
+            }
         }
-        
+        fseek(source, loopBeginning, SEEK_SET);
+        memset(command, 0, 200);
+        --times;
     }
     return false;
 }
