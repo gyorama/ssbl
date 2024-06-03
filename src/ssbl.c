@@ -1,6 +1,7 @@
 #include "../include/ssbl.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include <stdbool.h>
 #define MAX_INDEX 100
 
@@ -84,7 +85,6 @@ inline bool subtract(int *stack) {
     return false;
 }
 
-// Todo: make work
 inline bool divide(int *stack) {
     if (stack[0] < 2) {
         puts("Not enough arguments");
@@ -104,5 +104,27 @@ inline bool multiply(int *stack) {
     int result = stack[stack[0]] * stack[stack[0]-1]; // Only full divisions for now
     stack[0] -= 2;
     push(stack, result);
+    return false;
+}
+
+// Felt bad about making nested loops so I made it a function
+// Todo: Make this shit work
+inline bool loop(int *stack, int times, FILE *source) {
+    FILE *loopBeginning = source;
+    char valStr[13];
+    int val;
+    char *endPtr;
+    bool ret;
+
+    char command[200];
+    
+    
+    while (times != 0) {
+        // Never fucking mind
+        while (fscanf(source, "%s", &command) != EOF || strcasecmp(command, "end") != 0) {
+            puts("Repeat");
+        }
+        
+    }
     return false;
 }

@@ -70,12 +70,12 @@ int main(int argc, const char *argv[]) {
             ret = divide(stack);
         } else if (strcasecmp(command, "mul") == 0) {
             ret = multiply(stack);
-        } else if (strcasecmp(command, "times")) { // back to fuckass code
+        } else if (strcasecmp(command, "times") == 0) { // back to fuckass code
             fscanf(source, "%s", valStr);
             val = strtol(valStr, &endPtr, 10);
             // Make sure this is a valid integer
             if (*endPtr == '\0') {
-                ret = push(stack, val);
+                ret = loop(stack, val, source);
                 // if function failed
                 if (ret) {
                     break;

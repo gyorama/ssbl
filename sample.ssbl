@@ -1,4 +1,5 @@
-push 3
-push 6
-div
-top
+push 2
+
+times 1
+    top
+end
