@@ -1,6 +1,22 @@
 push 1
 
-times 50000000
-    push 1
-    add
+times 40
+    push 3
+    mul
+end
+
+isEmpty
+
+if false
+    top
+    clear
+end
+
+isEmpty
+
+if true
+    push 5
+    push 5
+    mul
+    top
 end

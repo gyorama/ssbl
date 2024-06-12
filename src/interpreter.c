@@ -84,6 +84,7 @@ int main(int argc, const char *argv[]) {
                 ret = clear(stack);
                 if (ret) {
                     puts("Stack already empty");
+                    return 1;
                 }
                 break;
 
@@ -123,10 +124,16 @@ int main(int argc, const char *argv[]) {
                 if (ret) {
                     return 1;
                 }
-                break;                
+                break;     
+
+            case IF:
+                fread(&val, sizeof(val), 1, source);
+
+                ifStatement(stack, source, val, ret);
+
+                break;     
 
             default:
-                puts("Idk");
                 break;
         }
     }

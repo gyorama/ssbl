@@ -37,20 +37,16 @@ inline bool top(int *stack) {
 inline bool isEmpty(int *stack) {
     // There's literally no way this function can fail
     if (stack[0] == 0) {
-        puts("Stack is empty");
         return true;
     }
-    puts("Stack is not empty");
     return false;
 }
 
 inline bool isFull(int *stack) {
     // Same for this function
     if (stack[0] == 100) {
-        puts("Stack is full");
         return true;
     }
-    puts("Stack is not full");
     return false;
 }
 
@@ -229,6 +225,13 @@ inline bool loop(int *stack, int times, FILE *source) {
                 break;
             }
         }
+    }
+    return false;
+}
+
+bool ifStatement(int *stack, FILE *source, bool condition, bool ret) {
+    if (condition == ret) {
+        loop(stack, 1, source); // I cooked
     }
     return false;
 }

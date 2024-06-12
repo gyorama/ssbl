@@ -15,7 +15,7 @@ enum keywords {
     DIVIDE,
     LOOP,
     END,
-    LABEL,
+    IF,
 
 };
 
@@ -37,4 +37,4 @@ bool inc(int *stack);
 
 // Misc
 bool loop(int *stack, int times, FILE *source);
-bool ifStatement(int *stack, FILE *source);
+bool ifStatement(int *stack, FILE *source, bool condition, bool ret);

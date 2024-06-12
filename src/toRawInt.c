@@ -91,11 +91,18 @@ int main(int argc, const char *argv[]) {
         } else if (strcasecmp(command, "end") == 0) {
             keyword = END;
             fwrite(&keyword, sizeof(int), 1, target);
-        } else if (strcasecmp(command, "label") == 0) {
-            keyword = LABEL;
+        } else if (strcasecmp(command, "if") == 0) {
+            fscanf(source, "%s", valStr);
+            if (strcasecmp(valStr, "true") == 0) {
+                val = true;
+            } else {
+                val = false;
+            }
+
+            keyword = IF;
             fwrite(&keyword, sizeof(int), 1, target);
+            fwrite(&val, sizeof(int), 1, target);
         }
-               
     }
 
     fclose(source);
