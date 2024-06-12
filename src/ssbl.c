@@ -220,8 +220,13 @@ inline bool loop(int *stack, int times, FILE *source) {
                 }
                 break;
 
+            case IF:
+                fread(&val, sizeof(val), 1, source);
+
+                ifStatement(stack, source, val, ret);
+                break;
+
             default:
-                puts("Idk");
                 break;
             }
         }
