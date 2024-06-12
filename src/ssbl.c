@@ -111,68 +111,106 @@ inline bool multiply(int *stack) {
 // Todo: Make this shit work
 inline bool loop(int *stack, int times, FILE *source) {
     int loopBeginning = ftell(source);
-    char valStr[13];
     int val;
-    char *endPtr;
     bool ret;
-
-    char command[200];
+    
+    int keyword;
     
     
     while (times != 0) {
         fseek(source, loopBeginning, SEEK_SET);
-        memset(command, 0, 200);
         --times;
         // Never fucking mind
-        while (fscanf(source, "%s", &command) != EOF && strcasecmp(command, "end") != 0) {
-            if (strcasecmp(command, "push") == 0) {
-            fscanf(source, "%s", valStr);
-            val = strtol(valStr, &endPtr, 10);
-            // Make sure this is a valid integer
-            if (*endPtr == '\0') {
+        while (fread(&keyword, sizeof(keyword), 1, source) && keyword != END) {
+        switch (keyword) {
+            case PUSH:
+                fread(&val, sizeof(val), 1, source);
+
                 ret = push(stack, val);
-                // if function failed
+
                 if (ret) {
-                    break;
+                    return 1;
                 }
-                
-            } else {
-                puts("Invalid integer");
-            }
-        // Code gets better from here
-            } else if (strcasecmp(command, "pop") == 0) {
+                break;
+        
+            case POP:
                 ret = pop(stack);
                 if (ret) {
-                    break;
+                    return 1;
                 }
-            } else if (strcasecmp(command, "top") == 0) {
+                break;
+
+            case TOP:
+                
                 ret = top(stack);
                 if (ret) {
-                    break;
+                    return 1;
                 }
-            } else if (strcasecmp(command, "isempty") == 0) {
+                break;
+
+            case IS_EMPTY:
                 ret = isEmpty(stack);
-            } else if (strcasecmp(command, "isfull") == 0) {
-                ret = isFull(stack);
-            } else if (strcasecmp(command, "clear") == 0) {
-                ret = clear(stack);
-            } else if (strcasecmp(command, "add") == 0) {
-                ret = add(stack);
-            } else if (strcasecmp(command, "sub") == 0) {
-                ret = subtract(stack);
-            } else if (strcasecmp(command, "div") == 0) {
-                ret = divide(stack);
-            } else if (strcasecmp(command, "mul") == 0) {
-                ret = multiply(stack);
-            } else if (strcasecmp(command, "times") == 0) {
-                fscanf(source, "%s", valStr);
-                val = strtol(valStr, &endPtr, 10);
-                if (*endPtr == '\0') {
-                    ret = loop(stack, val, source);
-                    if (ret) {
-                        break;
-                    }
+                if (ret) {
+                    return 1;
                 }
+                break;
+            
+            case IS_FULL:
+                ret = isFull(stack);
+                if (ret) {
+                    return 1;
+                }
+                break;
+        
+            case CLEAR:
+                ret = clear(stack);
+                if (ret) {
+                    return 1;
+                }
+                break;
+
+            case ADD:
+                ret = add(stack);
+
+                if (ret) {
+                    return 1;
+                }
+                break;
+            
+            case SUBTRACT:
+                ret = subtract(stack);
+                if (ret) {
+                    return 1;
+                }
+
+                break;
+
+            case MULTIPLY:
+                ret = multiply(stack);
+                if (ret) {
+                    return 1;
+                }
+                break;
+
+            case DIVIDE:
+                ret = divide(stack);
+                if (ret) {
+                    return 1;
+                }
+                break;
+
+            case LOOP:
+                fread(&val, sizeof(val), 1, source);
+
+                ret = loop(stack, val, source);
+                if (ret) {
+                    return 1;
+                }
+                break;
+
+            default:
+                puts("Idk");
+                break;
             }
         }
     }

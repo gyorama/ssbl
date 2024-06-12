@@ -5,6 +5,15 @@
 #include <stdbool.h>
 
 
+bool arrncmp(int arr1[], int arr2[], int size) {
+    for (int i = 0; i < size; i++) {
+        if (arr1[i] != arr2[i]) {
+            return false; // Arrays are different
+        }
+    }
+    return true; // Arrays are the same
+}
+
 int main(int argc, const char *argv[]) {
     if (argc < 2) {
         puts("USAGE:"
@@ -14,76 +23,113 @@ int main(int argc, const char *argv[]) {
 
     int stack[101]; // The stack, which is really just an array
     stack[0] = 0;
-    char valStr[13];
+
+    FILE *source = fopen(argv[1], "rb");
+    int magicFileSignature[9] = {0xAF, 0x00, 0xDD, 0xF0,
+                                 0xAA, 0x55, 0xBA, 0xBE, 0x03};
+    int signatureCheck[9];
+    int keyword;
     int val;
-    char *endPtr;
-    bool ret;
+    bool ret; 
 
-    FILE *source = fopen(argv[1], "r");
+    fread(&signatureCheck, sizeof(signatureCheck), 1, source);
 
-    char command[200]; // if you buffer overflow this shit istg
+    if (!arrncmp(signatureCheck, magicFileSignature, 9)) {
+        puts("Invalid file format");
+        return 1;
+    }
+    
 
     if (!source) {
         perror("Could not open file");
         return 1;
     }
 
-    while (fscanf(source, "%s", command) != EOF) {
+    while (fread(&keyword, sizeof(keyword), 1, source)) {
+        switch (keyword) {
+            case PUSH:
+                fread(&val, sizeof(int), 1, source);
 
-        // This is atrocious
-        if (strcasecmp(command, "push") == 0) {
-            fscanf(source, "%s", valStr);
-            val = strtol(valStr, &endPtr, 10);
-            // Make sure this is a valid integer
-            if (*endPtr == '\0') {
                 ret = push(stack, val);
-                // if function failed
+
                 if (ret) {
-                    break;
+                    return 1;
                 }
+                break;
+        
+            case POP:
+                ret = pop(stack);
+                if (ret) {
+                    return 1;
+                }
+                break;
+
+            case TOP:
                 
-            } else {
-                puts("Invalid integer");
-            }
-        // Code gets better from here
-        } else if (strcasecmp(command, "pop") == 0) {
-            ret = pop(stack);
-            if (ret) {
-                break;
-            }
-        } else if (strcasecmp(command, "top") == 0) {
-            ret = top(stack);
-            if (ret) {
-                break;
-            }
-        } else if (strcasecmp(command, "isempty") == 0) {
-            ret = isEmpty(stack);
-        } else if (strcasecmp(command, "isfull") == 0) {
-            ret = isFull(stack);
-        } else if (strcasecmp(command, "clear") == 0) {
-            ret = clear(stack);
-        } else if (strcasecmp(command, "add") == 0) {
-            ret = add(stack);
-        } else if (strcasecmp(command, "sub") == 0) {
-            ret = subtract(stack);
-        } else if (strcasecmp(command, "div") == 0) {
-            ret = divide(stack);
-        } else if (strcasecmp(command, "mul") == 0) {
-            ret = multiply(stack);
-        } else if (strcasecmp(command, "times") == 0) { // back to fuckass code
-            fscanf(source, "%s", valStr);
-            val = strtol(valStr, &endPtr, 10);
-            // Make sure this is a valid integer
-            if (*endPtr == '\0') {
-                ret = loop(stack, val, source);
-                // if function failed
+                ret = top(stack);
                 if (ret) {
-                    break;
+                    return 1;
                 }
-            }
+                break;
+
+            case IS_EMPTY:
+                ret = isEmpty(stack);
+                break;
+            
+            case IS_FULL:
+                ret = isFull(stack);
+                break;
+        
+            case CLEAR:
+                ret = clear(stack);
+                if (ret) {
+                    puts("Stack already empty");
+                }
+                break;
+
+            case ADD:
+                ret = add(stack);
+                if (ret) {
+                    return 1;
+                }
+                break;
+            
+            case SUBTRACT:
+                ret = subtract(stack);
+                if (ret) {
+                    return 1;
+                }
+
+                break;
+
+            case MULTIPLY:
+                ret = multiply(stack);
+                if (ret) {
+                    return 1;
+                }
+                break;
+
+            case DIVIDE:
+                ret = divide(stack);
+                if (ret) {
+                    return 1;
+                }
+                break;
+
+            case LOOP:
+                fread(&val, sizeof(val), 1, source);
+
+                ret = loop(stack, val, source);
+                if (ret) {
+                    return 1;
+                }
+                break;
+
+            default:
+                puts("Idk");
+                break;
         }
     }
-
     fclose(source);
 
     return 0;

@@ -12,7 +12,8 @@ fi
 gcc -c src/ssbl.c -o build/ssbl.o
 ar rcs libr/libssbl.a build/ssbl.o
 
-# Compile the interpreter
+# Compile the interpreter and bytecode compiler
+gcc -O3 src/toRawInt.c -o build/sbcm
 gcc -O3 -Llibr/ src/interpreter.c -o build/ssbl -lssbl
 
 # Remove object file

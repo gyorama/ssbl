@@ -1,6 +1,22 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+enum keywords {
+    PUSH = 0,
+    POP,
+    TOP,
+    IS_EMPTY,
+    IS_FULL,
+    CLEAR,
+    ADD,
+    SUBTRACT,
+    MULTIPLY,
+    DIVIDE,
+    LOOP,
+    END,
+};
+
 // All stuff is inline just in case the compiler actually decides to inline
 
 // Main things

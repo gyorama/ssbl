@@ -3,21 +3,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
+#include "../include/ssbl.h"
 
-enum funcs {
-    PUSH = 0,
-    POP,
-    TOP,
-    IS_EMPTY,
-    IS_FULL,
-    CLEAR,
-    ADD,
-    SUBTRACT,
-    MULTIPLY,
-    DIVIDE,
-    LOOP,
-    END,
-};
 
 int main(int argc, const char *argv[]) {
     if (argc < 3) {
@@ -31,6 +18,7 @@ int main(int argc, const char *argv[]) {
 
     if (!source || !target) {
         perror("Could not open file");
+        return 1;
     }
 
     char valStr[13];
@@ -38,18 +26,26 @@ int main(int argc, const char *argv[]) {
     char *endPtr;
     bool ret;
     char command[200];
-    enum funcs keyword = PUSH;
+    int magicFileSignature[9] = {0xAF, 0x00, 0xDD, 0xF0,
+                                 0xAA, 0x55, 0xBA, 0xBE, 0x03};
+    enum keywords keyword;
+
+    // Write ssbl signature so that the interpreter can't run random binary files
+    // What are the chances the 1st 9 bytes in a random file are the exact same as this one anyway
+    fwrite(&magicFileSignature, sizeof(int), 9, target);
 
     while (fscanf(source, "%s", command) != EOF) {
 
         // This is atrocious
         if (strcasecmp(command, "push") == 0) {
             keyword = PUSH;
+
             fscanf(source, "%s", valStr);
             val = strtol(valStr, &endPtr, 10);
+            
             if (*endPtr == '\0') {
-                   fwrite(&keyword, sizeof(int), 1, target);
-                   fwrite(&val, sizeof(int), 1, target);
+                fwrite(&keyword, sizeof(int), 1, target);
+                fwrite(&val, sizeof(int), 1, target);
             } else {
                 puts("Invalid integer");
             }
@@ -85,12 +81,15 @@ int main(int argc, const char *argv[]) {
             keyword = LOOP;
             fscanf(source, "%s", valStr);
             val = strtol(valStr, &endPtr, 10);
+            fwrite(&keyword, sizeof(int), 1, target);
             // Make sure this is a valid integer
             if (*endPtr == '\0') {
-                fwrite(&keyword, sizeof(int), 1, target);
                 fwrite(&val, sizeof(int), 1, target);
+            } else {
+                puts("Invalid integer");
             }
         } else if (strcasecmp(command, "end") == 0) {
+            keyword = END;
             fwrite(&keyword, sizeof(int), 1, target);
         }
     }

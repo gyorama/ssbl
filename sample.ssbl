@@ -1,1 +1,6 @@
-push 65
+push 1
+
+times 50000000
+    push 1
+    add
+end
