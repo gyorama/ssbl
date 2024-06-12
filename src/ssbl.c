@@ -107,8 +107,24 @@ inline bool multiply(int *stack) {
     return false;
 }
 
-// Felt bad about making nested loops so I made it a function
-// Todo: Make this shit work
+inline bool dec(int *stack) {
+    if (stack[0] < 1) {
+        puts("Not enough arguments");
+        return true;
+    }
+    --stack[stack[0]];
+    return false;
+}
+
+inline bool inc(int *stack) {
+    if (stack[0] < 1) {
+        puts("Not enough arguments");
+        return true;
+    }
+    ++stack[stack[0]];
+    return false;
+}
+
 inline bool loop(int *stack, int times, FILE *source) {
     int loopBeginning = ftell(source);
     int val;
@@ -120,7 +136,7 @@ inline bool loop(int *stack, int times, FILE *source) {
     while (times != 0) {
         fseek(source, loopBeginning, SEEK_SET);
         --times;
-        // Never fucking mind
+
         while (fread(&keyword, sizeof(keyword), 1, source) && keyword != END) {
         switch (keyword) {
             case PUSH:

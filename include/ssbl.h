@@ -15,9 +15,9 @@ enum keywords {
     DIVIDE,
     LOOP,
     END,
-};
+    LABEL,
 
-// All stuff is inline just in case the compiler actually decides to inline
+};
 
 // Main things
 bool push(int *stack, int value);
@@ -32,4 +32,9 @@ bool add(int *stack);
 bool subtract(int *stack);
 bool divide(int *stack);
 bool multiply(int *stack);
+bool dec(int *stack);
+bool inc(int *stack);
+
+// Misc
 bool loop(int *stack, int times, FILE *source);
+bool ifStatement(int *stack, FILE *source);

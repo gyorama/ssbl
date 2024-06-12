@@ -123,7 +123,7 @@ int main(int argc, const char *argv[]) {
                 if (ret) {
                     return 1;
                 }
-                break;
+                break;                
 
             default:
                 puts("Idk");
