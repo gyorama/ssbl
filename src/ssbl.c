@@ -233,5 +233,4 @@ bool ifStatement(int *stack, FILE *source, bool condition, bool ret) {
     if (condition == ret) {
         loop(stack, 1, source); // I cooked
     }
-    return false;
 }
