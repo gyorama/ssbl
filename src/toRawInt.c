@@ -121,6 +121,9 @@ int main(int argc, const char *argv[]) {
             fwrite(&keyword, sizeof(int16_t), 1, target);
         } else {
             printf("Unknown function '%s'", &command);
+            fclose(source);
+            fclose(target);
+            return 1;
         }
     }
 
