@@ -3,9 +3,10 @@
 #include <string.h>
 #include "../include/ssbl.h"
 #include <stdbool.h>
+#include <stdint.h>
 
 
-bool arrncmp(int arr1[], int arr2[], int size) {
+bool arrncmp(int8_t arr1[], int8_t arr2[], int size) {
     for (int i = 0; i < size; i++) {
         if (arr1[i] != arr2[i]) {
             return false; // Arrays are different
@@ -25,9 +26,9 @@ int main(int argc, const char *argv[]) {
     stack[0] = 0;
 
     FILE *source = fopen(argv[1], "rb");
-    int magicFileSignature[9] = {0xAF, 0x00, 0xDD, 0xF0,
+    int8_t magicFileSignature[9] = {0xAF, 0x00, 0xDD, 0xF0,
                                  0xAA, 0x55, 0xBA, 0xBE, 0x03};
-    int signatureCheck[9];
+    int8_t signatureCheck[9];
     int keyword;
     int val;
     bool ret; 
@@ -45,7 +46,7 @@ int main(int argc, const char *argv[]) {
         return 1;
     }
 
-    while (fread(&keyword, sizeof(keyword), 1, source)) {
+    while (fread(&keyword, sizeof(int16_t), 1, source)) {
         switch (keyword) {
             case PUSH:
                 fread(&val, sizeof(int), 1, source);
@@ -78,6 +79,7 @@ int main(int argc, const char *argv[]) {
             
             case IS_FULL:
                 ret = isFull(stack);
+                printf("Is full: %d", ret);
                 break;
         
             case CLEAR:
@@ -118,7 +120,7 @@ int main(int argc, const char *argv[]) {
                 break;
 
             case LOOP:
-                fread(&val, sizeof(val), 1, source);
+                fread(&val, sizeof(int), 1, source);
 
                 ret = loop(stack, val, source);
                 if (ret) {
@@ -127,7 +129,7 @@ int main(int argc, const char *argv[]) {
                 break;     
 
             case IF:
-                fread(&val, sizeof(val), 1, source);
+                fread(&val, sizeof(int8_t), 1, source);
 
                 ifStatement(stack, source, val, ret);
 

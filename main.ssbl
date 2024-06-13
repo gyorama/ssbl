@@ -3,7 +3,19 @@ push 4
 push 100
 pop
 add
+top
+
 push 3
 push 4
 add
 mul
+top
+
+pop
+isEmpty
+
+if true
+    push 2
+end
+
+top

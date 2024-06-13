@@ -3,6 +3,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdint.h>
+
 #define MAX_INDEX 100
 
 inline bool push(int *stack, int value) {
@@ -36,7 +38,7 @@ inline bool top(int *stack) {
 
 inline bool isEmpty(int *stack) {
     // There's literally no way this function can fail
-    if (stack[0] == 0) {
+    if (stack[0] < 1) {
         return true;
     }
     return false;
@@ -126,7 +128,7 @@ inline bool loop(int *stack, int times, FILE *source) {
     int val;
     bool ret;
     
-    int keyword;
+    int16_t keyword;
     
     
     while (times != 0) {
@@ -221,7 +223,7 @@ inline bool loop(int *stack, int times, FILE *source) {
                 break;
 
             case IF:
-                fread(&val, sizeof(val), 1, source);
+                fread(&val, sizeof(bool), 1, source);
 
                 ifStatement(stack, source, val, ret);
                 break;
@@ -235,7 +237,15 @@ inline bool loop(int *stack, int times, FILE *source) {
 }
 
 bool ifStatement(int *stack, FILE *source, bool condition, bool ret) {
+    
+    int16_t keyword;
+    int val;
+
     if (condition == ret) {
         loop(stack, 1, source); // I cooked
+    } else {
+        while (fread(&keyword, sizeof(int16_t), 1, source) && keyword != END) {
+            continue;
+        }
     }
 }

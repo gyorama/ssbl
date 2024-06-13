@@ -101,7 +101,7 @@ int main(int argc, const char *argv[]) {
 
             keyword = IF;
             fwrite(&keyword, sizeof(int16_t), 1, target);
-            fwrite(&val, sizeof(bool), 1, target);
+            fwrite(&val, sizeof(int8_t), 1, target);
         }
     }
 
