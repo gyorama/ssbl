@@ -18,7 +18,7 @@ bool arrncmp(int8_t arr1[], int8_t arr2[], int size) {
 int main(int argc, const char *argv[]) {
     if (argc < 2) {
         puts("USAGE:"
-             "\tssbl [SOURCE FILE]");
+             "\tssbl [BINARY FILE]");
         return 1;
     }
 
