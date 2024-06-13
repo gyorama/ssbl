@@ -16,9 +16,14 @@ enum keywords {
     LOOP,
     END,
     IF,
-
+    SWAP,
+    DEC,
+    INC,
+    SIZE,
+    DUPLICATE,
 };
 
+typedef bool (*Keyword)(int *stack);
 // Main things
 bool push(int *stack, int value);
 bool pop(int *stack);
@@ -38,3 +43,6 @@ bool inc(int *stack);
 // Misc
 bool loop(int *stack, int times, FILE *source);
 bool ifStatement(int *stack, FILE *source, bool condition, bool ret);
+bool swap(int *stack);
+bool size(int *stack);
+bool duplicate(int *stack);

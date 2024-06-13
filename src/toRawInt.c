@@ -21,7 +21,7 @@ int main(int argc, const char *argv[]) {
         return 1;
     }
 
-    char valStr[13];
+    char valStr[20];
     int val;
     char *endPtr;
     bool ret;
@@ -48,6 +48,7 @@ int main(int argc, const char *argv[]) {
                 fwrite(&val, sizeof(int), 1, target);
             } else {
                 puts("Invalid integer");
+                return 1;
             }
         // Code gets better from here
         } else if (strcasecmp(command, "pop") == 0) {
@@ -87,6 +88,7 @@ int main(int argc, const char *argv[]) {
                 fwrite(&val, sizeof(int), 1, target);
             } else {
                 puts("Invalid integer");
+                return 1;
             }
         } else if (strcasecmp(command, "end") == 0) {
             keyword = END;
@@ -102,6 +104,23 @@ int main(int argc, const char *argv[]) {
             keyword = IF;
             fwrite(&keyword, sizeof(int16_t), 1, target);
             fwrite(&val, sizeof(int8_t), 1, target);
+        } else if (strcasecmp(command, "swap") == 0) {
+            keyword = SWAP;
+            fwrite(&keyword, sizeof(int16_t), 1, target);
+        } else if (strcasecmp(command, "dec") == 0) {
+            keyword = DEC;
+            fwrite(&keyword, sizeof(int16_t), 1, target);
+        } else if (strcasecmp(command, "inc") == 0) {
+            keyword = INC;
+            fwrite(&keyword, sizeof(int16_t), 1, target);
+        } else if (strcasecmp(command, "size") == 0) {
+            keyword = SIZE;
+            fwrite(&keyword, sizeof(int16_t), 1, target);
+        } else if (strcasecmp(command, "duplicate") == 0) {
+            keyword = DUPLICATE;
+            fwrite(&keyword, sizeof(int16_t), 1, target);
+        } else {
+            printf("Unknown function '%s'", &command);
         }
     }
 

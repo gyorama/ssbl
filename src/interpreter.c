@@ -31,18 +31,17 @@ int main(int argc, const char *argv[]) {
     int8_t signatureCheck[9];
     int keyword;
     int val;
-    bool ret; 
+    bool ret;    
+
+    if (!source) {
+        perror("Could not open file");
+        return 1;
+    }
 
     fread(&signatureCheck, sizeof(signatureCheck), 1, source);
 
     if (!arrncmp(signatureCheck, magicFileSignature, 9)) {
         puts("Invalid file format");
-        return 1;
-    }
-    
-
-    if (!source) {
-        perror("Could not open file");
         return 1;
     }
 
@@ -52,10 +51,6 @@ int main(int argc, const char *argv[]) {
                 fread(&val, sizeof(int), 1, source);
 
                 ret = push(stack, val);
-
-                if (ret) {
-                    return 1;
-                }
                 break;
         
             case POP:
@@ -79,15 +74,11 @@ int main(int argc, const char *argv[]) {
             
             case IS_FULL:
                 ret = isFull(stack);
-                printf("Is full: %d", ret);
                 break;
         
             case CLEAR:
                 ret = clear(stack);
-                if (ret) {
-                    puts("Stack already empty");
-                    return 1;
-                }
+                
                 break;
 
             case ADD:
@@ -102,7 +93,6 @@ int main(int argc, const char *argv[]) {
                 if (ret) {
                     return 1;
                 }
-
                 break;
 
             case MULTIPLY:
@@ -123,9 +113,6 @@ int main(int argc, const char *argv[]) {
                 fread(&val, sizeof(int), 1, source);
 
                 ret = loop(stack, val, source);
-                if (ret) {
-                    return 1;
-                }
                 break;     
 
             case IF:
@@ -133,7 +120,39 @@ int main(int argc, const char *argv[]) {
 
                 ifStatement(stack, source, val, ret);
 
-                break;     
+                break;
+
+            case SWAP:
+                ret = swap(stack);
+                if (ret) {
+                    return 1;
+                }
+                break;
+            case DEC:
+                ret = dec(stack);
+                if (ret) {
+                    return 1;
+                }
+                break;
+
+            case INC:
+                ret = inc(stack);
+                if (ret) {
+                    return 1;
+                }
+                break;
+
+            case SIZE:
+                ret = size(stack);
+                
+                break;
+            
+            case DUPLICATE:
+                ret = duplicate(stack);
+                if (ret) {
+                    return 1;
+                }
+                break;
 
             default:
                 break;

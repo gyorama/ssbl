@@ -228,6 +228,40 @@ inline bool loop(int *stack, int times, FILE *source) {
                 ifStatement(stack, source, val, ret);
                 break;
 
+            case SWAP:
+                ret = swap(stack);
+                if (ret) {
+                    return 1;
+                }
+            
+            case DEC:
+                ret = dec(stack);
+                if (ret) {
+                    return 1;
+                }
+                break;
+
+            case INC:
+                ret = inc(stack);
+                if (ret) {
+                    return 1;
+                }
+                break;
+
+            case SIZE:
+                ret = size(stack);
+                if (ret) {
+                    return 1;
+                }
+                break;
+
+            case DUPLICATE:
+                ret = duplicate(stack);
+                if (ret) {
+                    return 1;
+                }
+                break;
+
             default:
                 break;
             }
@@ -236,10 +270,9 @@ inline bool loop(int *stack, int times, FILE *source) {
     return false;
 }
 
-bool ifStatement(int *stack, FILE *source, bool condition, bool ret) {
+inline bool ifStatement(int *stack, FILE *source, bool condition, bool ret) {
     
     int16_t keyword;
-    int val;
 
     if (condition == ret) {
         loop(stack, 1, source); // I cooked
@@ -248,4 +281,29 @@ bool ifStatement(int *stack, FILE *source, bool condition, bool ret) {
             continue;
         }
     }
+}
+
+inline bool swap(int *stack) {
+    if (stack[0] < 2) {
+        puts("Not enough arguments");
+        return true;
+    }
+    int temp = stack[stack[0]];
+    stack[stack[0]] = ++stack[stack[0]-1]; // I don't know why but this works
+    stack[stack[0]-1] = temp;
+    return false;
+}
+
+inline bool size(int *stack) {
+    push(stack, stack[0]);
+    return false;
+}
+
+inline bool duplicate(int *stack) {
+    if (stack[0] < 1) {
+        puts("Not enough arguments");
+        return true;
+    }
+    push(stack, stack[stack[0]]);
+    return false;
 }
