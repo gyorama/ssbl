@@ -116,7 +116,7 @@ int main(int argc, const char *argv[]) {
         } else if (strcasecmp(command, "size") == 0) {
             keyword = SIZE;
             fwrite(&keyword, sizeof(int16_t), 1, target);
-        } else if (strcasecmp(command, "duplicate") == 0) {
+        } else if (strcasecmp(command, "dup") == 0) {
             keyword = DUPLICATE;
             fwrite(&keyword, sizeof(int16_t), 1, target);
         } else {
