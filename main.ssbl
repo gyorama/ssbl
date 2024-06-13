@@ -1,0 +1,9 @@
+push 3
+push 4
+push 100
+pop
+add
+push 3
+push 4
+add
+mul
