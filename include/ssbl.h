@@ -25,25 +25,24 @@ enum keywords {
 
 typedef bool (*Function)(int *stack);
 // Main things
-bool push(int *stack, int value);
-bool pop(int *stack);
-bool top(int *stack);
-bool isEmpty(int *stack);
-bool isFull(int *stack);
-bool clear(int *stack);
+bool push(int *stack, int value); // Add a value to the stack
+bool pop(int *stack); // Remove a value from the stack
+bool top(int *stack); // Print out the value on the current stack index
+bool isEmpty(int *stack); // Check if the stack is empty
+bool isFull(int *stack); // Check if the stack is full
+bool clear(int *stack); // Clear the stack
 
 // Math
 bool add(int *stack);
 bool subtract(int *stack);
 bool divide(int *stack);
 bool multiply(int *stack);
-bool dec(int *stack);
-bool inc(int *stack);
+bool dec(int *stack); // Decrement
+bool inc(int *stack); // Increment
 
 // Misc
-bool loop(int *stack, int times, FILE *source);
-bool ifStatement(int *stack, FILE *source, bool condition, bool ret);
-bool swap(int *stack);
-bool size(int *stack);
-bool duplicate(int *stack);
-bool print(int *stack);
+bool loop(int *stack, int times, FILE *source); // Repeat code inside `times` statement `int times` amount
+bool ifStatement(int *stack, FILE *source, bool condition, bool ret); // Crappy conditional statement
+bool swap(int *stack); // Swap 2 top stack values
+bool size(int *stack); // Print the size of the stack
+bool duplicate(int *stack); // Duplicate the top stack value

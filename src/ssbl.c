@@ -14,7 +14,7 @@ bool push(int *stack, int value) {
         return true;
     }
     ++stack[0];
-    stack[stack[0]] = value; // wtf is stack[stack[0]] bro
+    stack[stack[0]] = value;
     return false;
 };
 
@@ -45,7 +45,6 @@ bool isEmpty(int *stack) {
 }
 
 bool isFull(int *stack) {
-    // Same for this function
     if (stack[0] == 100) {
         return true;
     }
@@ -67,11 +66,10 @@ bool add(int *stack) {
     }
     int result = stack[stack[0]] + stack[stack[0]-1];
     stack[0] -= 2;
-    push(stack, result); // This is so unreadable but fuck it
+    push(stack, result);
     return false;
 }
 
-// That's literally add copypasted but with a -
 bool subtract(int *stack) {
     if (stack[0] < 2) {
         puts("Not enough values on the stack\nTry pushing something to the stack");
@@ -129,141 +127,43 @@ bool loop(int *stack, int times, FILE *source) {
     bool ret;
     
     int16_t keyword;
-    
+    Function keywordArr[19] = {push, pop, top, isEmpty, isFull, clear, add,
+                               subtract, multiply, divide, loop, ifStatement, swap,
+                               dec, inc, size, duplicate};
     
     while (times != 0) {
         fseek(source, loopBeginning, SEEK_SET);
         --times;
 
         while (fread(&keyword, sizeof(keyword), 1, source) && keyword != END) {
-        switch (keyword) {
-            case PUSH:
-                fread(&val, sizeof(val), 1, source);
-
+            if (keyword == PUSH) {
+                fread(&val, sizeof(int), 1, source);
                 ret = push(stack, val);
-
                 if (ret) {
+                    fclose(source);
+                    perror("Err:");
                     return 1;
                 }
-                break;
-        
-            case POP:
-                ret = pop(stack);
+            } else if (keyword == IF) {
+                fread(&val, sizeof(int), 1, source);
+                ret = ifStatement(stack, source, val, ret);
                 if (ret) {
+                    fclose(source);
+                    perror("Err:");
                     return 1;
                 }
-                break;
-
-            case TOP:
-                
-                ret = top(stack);
-                if (ret) {
-                    return 1;
-                }
-                break;
-
-            case IS_EMPTY:
-                ret = isEmpty(stack);
-                if (ret) {
-                    return 1;
-                }
-                break;
-            
-            case IS_FULL:
-                ret = isFull(stack);
-                if (ret) {
-                    return 1;
-                }
-                break;
-        
-            case CLEAR:
-                ret = clear(stack);
-                if (ret) {
-                    return 1;
-                }
-                break;
-
-            case ADD:
-                ret = add(stack);
-
-                if (ret) {
-                    return 1;
-                }
-                break;
-            
-            case SUBTRACT:
-                ret = subtract(stack);
-                if (ret) {
-                    return 1;
-                }
-
-                break;
-
-            case MULTIPLY:
-                ret = multiply(stack);
-                if (ret) {
-                    return 1;
-                }
-                break;
-
-            case DIVIDE:
-                ret = divide(stack);
-                if (ret) {
-                    return 1;
-                }
-                break;
-
-            case LOOP:
-                fread(&val, sizeof(val), 1, source);
-
+            } else if (keyword == LOOP) {
+                fread(&val, sizeof(int), 1, source);
                 ret = loop(stack, val, source);
                 if (ret) {
+                    fclose(source);
+                    perror("Err:");
                     return 1;
                 }
-                break;
-
-            case IF:
-                fread(&val, sizeof(bool), 1, source);
-
-                ifStatement(stack, source, val, ret);
-                break;
-
-            case SWAP:
-                ret = swap(stack);
-                if (ret) {
-                    return 1;
-                }
-            
-            case DEC:
-                ret = dec(stack);
-                if (ret) {
-                    return 1;
-                }
-                break;
-
-            case INC:
-                ret = inc(stack);
-                if (ret) {
-                    return 1;
-                }
-                break;
-
-            case SIZE:
-                ret = size(stack);
-                if (ret) {
-                    return 1;
-                }
-                break;
-
-            case DUPLICATE:
-                ret = duplicate(stack);
-                if (ret) {
-                    return 1;
-                }
-                break;
-
-            default:
-                break;
+            } else if (keyword == END) {
+                continue;
+            } else {
+                ret = keywordArr[keyword](stack);
             }
         }
     }
@@ -271,11 +171,10 @@ bool loop(int *stack, int times, FILE *source) {
 }
 
 bool ifStatement(int *stack, FILE *source, bool condition, bool ret) {
-    
     int16_t keyword;
 
     if (condition == ret) {
-        loop(stack, 1, source); // I cooked
+        loop(stack, 1, source); // Reuse loop function because it works
     } else {
         while (fread(&keyword, sizeof(int16_t), 1, source) && keyword != END) {
             continue;

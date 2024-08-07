@@ -36,7 +36,7 @@ int main(int argc, const char *argv[]) {
     // Ignore "incompatible pointer" warnings, it's already handled
     Function keywordArr[19] = {push, pop, top, isEmpty, isFull, clear, add,
                                subtract, multiply, divide, loop, ifStatement, swap,
-                               dec, inc, size, duplicate, print};
+                               dec, inc, size, duplicate};
 
     if (!source) {
         perror("Could not open file");
@@ -51,6 +51,7 @@ int main(int argc, const char *argv[]) {
     }
 
     while (fread(&keyword, sizeof(int16_t), 1, source)) {
+        // Special cases
         if (keyword == PUSH) {
             fread(&val, sizeof(int), 1, source);
 
@@ -84,6 +85,7 @@ int main(int argc, const char *argv[]) {
         } else if (keyword == END) {
             continue;
         } else {
+            // Every other function
             ret = keywordArr[keyword](stack);
 
             if (ret) {
@@ -91,7 +93,6 @@ int main(int argc, const char *argv[]) {
                 perror("Err:");
                 return 1;
             }
-            break;
         }
     }
     fclose(source);
