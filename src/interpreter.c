@@ -14,7 +14,6 @@ bool arrncmp(int8_t arr1[], int8_t arr2[], int size) {
     }
     return true; // Arrays are the same
 }
-
 int main(int argc, const char *argv[]) {
     if (argc < 2) {
         puts("USAGE:"
@@ -29,12 +28,15 @@ int main(int argc, const char *argv[]) {
     int8_t magicFileSignature[9] = {0xAF, 0x00, 0xDD, 0xF0,
                                  0xAA, 0x55, 0xBA, 0xBE, 0x03};
     int8_t signatureCheck[9];
-    int keyword;
-    int val;
+    int16_t keyword;
+    int32_t val;
     bool ret;
-    Function keywordArr[] = {push, pop, top, isEmpty, isFull, clear, add, subtract,
-                           divide, multiply, dec, inc, loop, ifStatement, swap,
-                           size, duplicate, print};
+
+    // Array of functions that the language can do
+    // Ignore "incompatible pointer" warnings, it's already handled
+    Function keywordArr[19] = {push, pop, top, isEmpty, isFull, clear, add,
+                               subtract, multiply, divide, loop, ifStatement, swap,
+                               dec, inc, size, duplicate, print};
 
     if (!source) {
         perror("Could not open file");
@@ -49,29 +51,47 @@ int main(int argc, const char *argv[]) {
     }
 
     while (fread(&keyword, sizeof(int16_t), 1, source)) {
-        switch (keyword) {
-            case PUSH:
-                fread(&val, sizeof(int), 1, source);
+        if (keyword == PUSH) {
+            fread(&val, sizeof(int), 1, source);
 
-                ret = push(stack, val);
-                break;
+            ret = push(stack, val);
 
-            case LOOP:
-                fread(&val, sizeof(int), 1, source);
+            if (ret) {
+                fclose(source);
+                perror("Err:");
+                return 1;
+            }
+        } else if (keyword == IF) {
+            fread(&val, sizeof(int), 1, source);
 
-                ret = loop(stack, val, source);
-                break;     
+            ret = ifStatement(stack, source, val, ret);
 
-            case IF:
-                fread(&val, sizeof(int8_t), 1, source);
+            if (ret) {
+                fclose(source);
+                perror("Err:");
+                return 1;
+            }
+        } else if (keyword == LOOP) {
+            fread(&val, sizeof(int), 1, source);
 
-                ifStatement(stack, source, val, ret);
+            ret = loop(stack, val, source);
 
-                break;
+            if (ret) {
+                fclose(source);
+                perror("Err:");
+                return 1;
+            }
+        } else if (keyword == END) {
+            continue;
+        } else {
+            ret = keywordArr[keyword](stack);
 
-            default:
-                keywordArr[val](stack);
-                break;
+            if (ret) {
+                fclose(source);
+                perror("Err:");
+                return 1;
+            }
+            break;
         }
     }
     fclose(source);

@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
@@ -118,9 +117,6 @@ int main(int argc, const char *argv[]) {
             fwrite(&keyword, sizeof(int16_t), 1, target);
         } else if (strcasecmp(command, "dup") == 0) {
             keyword = DUPLICATE;
-            fwrite(&keyword, sizeof(int16_t), 1, target);
-        } else if (strcasecmp(command, "prt")) {
-            keyword = PRINT;
             fwrite(&keyword, sizeof(int16_t), 1, target);
         } else {
             printf("Unknown function '%s'", &command);

@@ -8,7 +8,7 @@
 #define MAX_INDEX 100
 typedef bool (*Function)(int *stack);
 
-inline bool push(int *stack, int value) {
+bool push(int *stack, int value) {
     if (stack[0] > 100) {
         puts("Overflow");
         return true;
@@ -18,7 +18,7 @@ inline bool push(int *stack, int value) {
     return false;
 };
 
-inline bool pop(int *stack) {
+bool pop(int *stack) {
     if (stack[0] < 1) {
         puts("Underflow");
         return true;
@@ -27,7 +27,7 @@ inline bool pop(int *stack) {
     return false;
 };
 
-inline bool top(int *stack) {
+bool top(int *stack) {
     if (stack[0] < 1) {
         puts("Not valid stack index to print out");
         return true;
@@ -37,15 +37,14 @@ inline bool top(int *stack) {
     return false;
 }
 
-inline bool isEmpty(int *stack) {
-    // There's literally no way this function can fail
+bool isEmpty(int *stack) {
     if (stack[0] < 1) {
         return true;
     }
     return false;
 }
 
-inline bool isFull(int *stack) {
+bool isFull(int *stack) {
     // Same for this function
     if (stack[0] == 100) {
         return true;
@@ -53,7 +52,7 @@ inline bool isFull(int *stack) {
     return false;
 }
 
-inline bool clear(int *stack) {
+bool clear(int *stack) {
     if (isEmpty(stack)) {
         return true;
     }
@@ -61,7 +60,7 @@ inline bool clear(int *stack) {
     return false;    
 }
 
-inline bool add(int *stack) {
+bool add(int *stack) {
     if (stack[0] < 2) {
         puts("Not enough values on the stack\nTry pushing something to the stack");
         return true;
@@ -73,7 +72,7 @@ inline bool add(int *stack) {
 }
 
 // That's literally add copypasted but with a -
-inline bool subtract(int *stack) {
+bool subtract(int *stack) {
     if (stack[0] < 2) {
         puts("Not enough values on the stack\nTry pushing something to the stack");
         return true;
@@ -84,7 +83,7 @@ inline bool subtract(int *stack) {
     return false;
 }
 
-inline bool divide(int *stack) {
+bool divide(int *stack) {
     if (stack[0] < 2) {
         puts("Not enough values on the stack\nTry pushing something to the stack");
         return true;
@@ -95,7 +94,7 @@ inline bool divide(int *stack) {
     return false;
 }
 
-inline bool multiply(int *stack) {
+bool multiply(int *stack) {
     if (stack[0] < 2) {
         puts("Not enough values on the stack\nTry pushing something to the stack");
         return true;
@@ -106,7 +105,7 @@ inline bool multiply(int *stack) {
     return false;
 }
 
-inline bool dec(int *stack) {
+bool dec(int *stack) {
     if (stack[0] < 1) {
         puts("Not enough values on the stack\nTry pushing something to the stack");
         return true;
@@ -115,7 +114,7 @@ inline bool dec(int *stack) {
     return false;
 }
 
-inline bool inc(int *stack) {
+bool inc(int *stack) {
     if (stack[0] < 1) {
         puts("Not enough values on the stack\nTry pushing something to the stack");
         return true;
@@ -124,7 +123,7 @@ inline bool inc(int *stack) {
     return false;
 }
 
-inline bool loop(int *stack, int times, FILE *source) {
+bool loop(int *stack, int times, FILE *source) {
     int loopBeginning = ftell(source);
     int val;
     bool ret;
@@ -271,7 +270,7 @@ inline bool loop(int *stack, int times, FILE *source) {
     return false;
 }
 
-inline bool ifStatement(int *stack, FILE *source, bool condition, bool ret) {
+bool ifStatement(int *stack, FILE *source, bool condition, bool ret) {
     
     int16_t keyword;
 
@@ -284,7 +283,7 @@ inline bool ifStatement(int *stack, FILE *source, bool condition, bool ret) {
     }
 }
 
-inline bool swap(int *stack) {
+bool swap(int *stack) {
     if (stack[0] < 2) {
         puts("Not enough arguments");
         return true;
@@ -295,25 +294,16 @@ inline bool swap(int *stack) {
     return false;
 }
 
-inline bool size(int *stack) {
+bool size(int *stack) {
     push(stack, stack[0]);
     return false;
 }
 
-inline bool duplicate(int *stack) {
+bool duplicate(int *stack) {
     if (stack[0] < 1) {
         puts("Not enough values on the stack.\nTry pushing something to the stack");
         return true;
     }
     push(stack, stack[stack[0]]);
-    return false;
-}
-
-inline bool print(int *stack) {
-    if (stack[0] < 1) {
-    	puts("Not valid stack index to print out");
-    	return true;
-    }
-    putchar(stack[stack[0]]);
     return false;
 }

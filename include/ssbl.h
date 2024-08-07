@@ -21,7 +21,6 @@ enum keywords {
     INC,
     SIZE,
     DUPLICATE,
-    PRINT,
 };
 
 typedef bool (*Function)(int *stack);
