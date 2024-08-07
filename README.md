@@ -15,7 +15,8 @@ Just run `[Any shell you want] make.sh` (GNU/Linux) or just run `make.bat` (MS W
 
 # How to use
 
-Write a script with a .ssbl extension. Use `sbfm` to create a binary file that actually uses
+Write a script with a .ssbl extension. Use `sbfm` to create a binary file that `ssbl` can execute.
+Run `ssbl ./program.sbff`, and watch the result.
 
 
 # File extensions
