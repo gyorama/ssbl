@@ -21,7 +21,7 @@ int main(int argc, const char *argv[]) {
         return 1;
     }
 
-    int stack[MAX_INDEX + 1]; // The stack, which is really just an array
+    int32_t stack[MAX_INDEX + 1]; // The stack, which is really just an array
     stack[0] = 0;
 
     FILE *source = fopen(argv[1], "rb");
@@ -34,9 +34,9 @@ int main(int argc, const char *argv[]) {
 
     // Array of functions that the language can do
     // Ignore "incompatible pointer" warnings, it's already handled
-    Function keywordArr[19] = {push, pop, top, isEmpty, isFull, clear, add,
+    Function keywordArr[20] = {push, pop, top, isEmpty, isFull, clear, add,
                                subtract, multiply, divide, loop, ifStatement, swap,
-                               dec, inc, size, duplicate};
+                               dec, inc, size, duplicate, cmpEq0, cmpL0, cmpG0};
 
     if (!source) {
         perror("Could not open file");
@@ -53,33 +53,28 @@ int main(int argc, const char *argv[]) {
     while (fread(&keyword, sizeof(int16_t), 1, source)) {
         // Special cases
         if (keyword == PUSH) {
-            fread(&val, sizeof(int), 1, source);
+            fread(&val, sizeof(int32_t), 1, source);
 
             ret = push(stack, val);
 
             if (ret) {
                 fclose(source);
-                perror("Err:");
+                perror("Err");
                 return 1;
             }
         } else if (keyword == IF) {
-            fread(&val, sizeof(int), 1, source);
+            fread(&val, sizeof(bool), 1, source);
 
-            ret = ifStatement(stack, source, val, ret);
-
-            if (ret) {
-                fclose(source);
-                perror("Err:");
-                return 1;
-            }
+            ret = ifStatement(stack, source, keywordArr, val, ret);
+            
         } else if (keyword == LOOP) {
-            fread(&val, sizeof(int), 1, source);
+            fread(&val, sizeof(int32_t), 1, source);
 
-            ret = loop(stack, val, source);
+            ret = loop(stack, val, source, keywordArr);
 
             if (ret) {
                 fclose(source);
-                perror("Err:");
+                perror("Err");
                 return 1;
             }
         } else if (keyword == END) {
@@ -87,12 +82,6 @@ int main(int argc, const char *argv[]) {
         } else {
             // Every other function
             ret = keywordArr[keyword](stack);
-
-            if (ret) {
-                fclose(source);
-                perror("Err:");
-                return 1;
-            }
         }
     }
     fclose(source);

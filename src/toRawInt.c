@@ -94,10 +94,15 @@ int main(int argc, const char *argv[]) {
             fwrite(&keyword, sizeof(int16_t), 1, target);
         } else if (strcasecmp(command, "if") == 0) {
             fscanf(source, "%s", valStr);
-            if (strcasecmp(valStr, "true") == 0) {
+            if (strcasecmp(valStr, "true") == 0 || strcasecmp(valStr, "1") == 0) {
                 val = true;
-            } else {
+            } else if (strcasecmp(valStr, "false") == 0 || strcasecmp(valStr, "0") == 0) {
                 val = false;
+            } else {
+                puts("Only boolean conditions are supported now.");
+                fclose(source);
+                fclose(target);
+                return 1;
             }
 
             keyword = IF;
@@ -117,6 +122,15 @@ int main(int argc, const char *argv[]) {
             fwrite(&keyword, sizeof(int16_t), 1, target);
         } else if (strcasecmp(command, "dup") == 0) {
             keyword = DUPLICATE;
+            fwrite(&keyword, sizeof(int16_t), 1, target);
+        } else if (strcasecmp(command, "Eq0") == 0) {
+            keyword = EQ_0;
+            fwrite(&keyword, sizeof(int16_t), 1, target);
+        } else if (strcasecmp(command, "L0") == 0) {
+            keyword = L_0;
+            fwrite(&keyword, sizeof(int16_t), 1, target);
+        } else if (strcasecmp(command, "G0") == 0) {
+            keyword = G_0;
             fwrite(&keyword, sizeof(int16_t), 1, target);
         } else {
             printf("Unknown function '%s'", &command);

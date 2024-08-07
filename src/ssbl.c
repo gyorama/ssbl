@@ -120,15 +120,12 @@ bool inc(int *stack) {
     return false;
 }
 
-bool loop(int *stack, int times, FILE *source) {
+bool loop(int *stack, int times, FILE *source, Function keywordArr[]) {
     int loopBeginning = ftell(source);
     int val;
     bool ret;
     
     int16_t keyword;
-    Function keywordArr[19] = {push, pop, top, isEmpty, isFull, clear, add,
-                               subtract, multiply, divide, loop, ifStatement, swap,
-                               dec, inc, size, duplicate};
     
     while (times != 0) {
         fseek(source, loopBeginning, SEEK_SET);
@@ -145,7 +142,7 @@ bool loop(int *stack, int times, FILE *source) {
                 }
             } else if (keyword == IF) {
                 fread(&val, sizeof(int), 1, source);
-                ret = ifStatement(stack, source, val, ret);
+                ret = ifStatement(stack, source, keywordArr, val, ret);
                 if (ret) {
                     fclose(source);
                     perror("Err:");
@@ -153,7 +150,7 @@ bool loop(int *stack, int times, FILE *source) {
                 }
             } else if (keyword == LOOP) {
                 fread(&val, sizeof(int), 1, source);
-                ret = loop(stack, val, source);
+                ret = loop(stack, val, source, keywordArr);
                 if (ret) {
                     fclose(source);
                     perror("Err:");
@@ -169,11 +166,11 @@ bool loop(int *stack, int times, FILE *source) {
     return false;
 }
 
-bool ifStatement(int *stack, FILE *source, bool condition, bool ret) {
+bool ifStatement(int *stack, FILE *source, Function keywordArr[], bool condition, bool ret) {
     int16_t keyword;
 
     if (condition == ret) {
-        loop(stack, 1, source); // Reuse loop function because it works
+        loop(stack, 1, source, keywordArr); // Reuse loop function because it works
     } else {
         while (fread(&keyword, sizeof(int16_t), 1, source) && keyword != END) {
             continue;
@@ -223,6 +220,17 @@ bool cmpL0(int *stack) {
         return true;
     }
     if (stack[stack[0]] < 0) {
+        return true;
+    }
+    return false;
+}
+
+bool cmpG0(int *stack) {
+    if (stack[0] < 1) {
+        puts("Not enough values on the stack\nTry pushing something to the stack");
+        return true;
+    }
+    if (stack[stack[0]] > 0) {
         return true;
     }
     return false;

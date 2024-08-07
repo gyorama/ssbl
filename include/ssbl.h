@@ -23,6 +23,9 @@ enum keywords {
     INC,
     SIZE,
     DUPLICATE,
+    EQ_0,
+    L_0,
+    G_0,
 };
 
 typedef bool (*Function)(int *stack);
@@ -43,8 +46,8 @@ bool dec(int *stack); // Decrement
 bool inc(int *stack); // Increment
 
 // Misc
-bool loop(int *stack, int times, FILE *source); // Repeat code inside `times` statement `int times` amount
-bool ifStatement(int *stack, FILE *source, bool condition, bool ret); // Crappy conditional statement
+bool loop(int *stack, int times, FILE *source, Function keywordArr[]); // Repeat code inside `times` statement `int times` amount
+bool ifStatement(int *stack, FILE *source, Function keywordArr[], bool condition, bool ret); // Crappy conditional statement
 bool swap(int *stack); // Swap 2 top stack values
 bool size(int *stack); // Print the size of the stack
 bool duplicate(int *stack); // Duplicate the top stack value
