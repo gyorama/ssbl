@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define MAX_INDEX 2048
+
 enum keywords {
     PUSH = 0,
     POP,
@@ -46,3 +48,8 @@ bool ifStatement(int *stack, FILE *source, bool condition, bool ret); // Crappy 
 bool swap(int *stack); // Swap 2 top stack values
 bool size(int *stack); // Print the size of the stack
 bool duplicate(int *stack); // Duplicate the top stack value
+
+// 0 comparisons
+bool cmpEq0(int *stack); // Compare if top is equal to 0 
+bool cmpL0(int *stack); // Compare if top is less than 0
+bool cmpG0(int *stack); // Compare if top is greater than 0

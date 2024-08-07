@@ -5,7 +5,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define MAX_INDEX 100
 typedef bool (*Function)(int *stack);
 
 bool push(int *stack, int value) {
@@ -204,5 +203,27 @@ bool duplicate(int *stack) {
         return true;
     }
     push(stack, stack[stack[0]]);
+    return false;
+}
+
+bool cmpEq0(int *stack) {
+    if (stack[0] < 1) {
+        puts("Not enough values on the stack\nTry pushing something to the stack");
+        return true;
+    }
+    if (stack[stack[0]] == 0) {
+        return true;
+    }
+    return false;
+}
+
+bool cmpL0(int *stack) {
+    if (stack[0] < 1) {
+        puts("Not enough values on the stack\nTry pushing something to the stack");
+        return true;
+    }
+    if (stack[stack[0]] < 0) {
+        return true;
+    }
     return false;
 }

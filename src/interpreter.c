@@ -21,7 +21,7 @@ int main(int argc, const char *argv[]) {
         return 1;
     }
 
-    int stack[101]; // The stack, which is really just an array
+    int stack[MAX_INDEX + 1]; // The stack, which is really just an array
     stack[0] = 0;
 
     FILE *source = fopen(argv[1], "rb");
