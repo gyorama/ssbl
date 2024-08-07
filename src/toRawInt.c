@@ -9,7 +9,7 @@
 int main(int argc, const char *argv[]) {
     if (argc < 3) {
         puts("USAGE:"
-             "\tsbcm [SOURCE FILE] [BYTECODE FILE]");
+             "\tsbfm [SOURCE FILE] [BYTECODE FILE]");
         return 1;
     }
 
@@ -118,6 +118,9 @@ int main(int argc, const char *argv[]) {
             fwrite(&keyword, sizeof(int16_t), 1, target);
         } else if (strcasecmp(command, "dup") == 0) {
             keyword = DUPLICATE;
+            fwrite(&keyword, sizeof(int16_t), 1, target);
+        } else if (strcasecmp(command, "prt")) {
+            keyword = PRINT;
             fwrite(&keyword, sizeof(int16_t), 1, target);
         } else {
             printf("Unknown function '%s'", &command);

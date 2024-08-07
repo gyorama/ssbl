@@ -8,7 +8,6 @@ if [ ! -d ./libr ]; then
 fi
 
 # Make the library
-
 gcc -c src/ssbl.c -o build/ssbl.o
 ar rcs libr/libssbl.a build/ssbl.o
 

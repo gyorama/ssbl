@@ -31,7 +31,10 @@ int main(int argc, const char *argv[]) {
     int8_t signatureCheck[9];
     int keyword;
     int val;
-    bool ret;    
+    bool ret;
+    Function keywordArr[] = {push, pop, top, isEmpty, isFull, clear, add, subtract,
+                           divide, multiply, dec, inc, loop, ifStatement, swap,
+                           size, duplicate, print};
 
     if (!source) {
         perror("Could not open file");
@@ -52,62 +55,6 @@ int main(int argc, const char *argv[]) {
 
                 ret = push(stack, val);
                 break;
-        
-            case POP:
-                ret = pop(stack);
-                if (ret) {
-                    return 1;
-                }
-                break;
-
-            case TOP:
-                
-                ret = top(stack);
-                if (ret) {
-                    return 1;
-                }
-                break;
-
-            case IS_EMPTY:
-                ret = isEmpty(stack);
-                break;
-            
-            case IS_FULL:
-                ret = isFull(stack);
-                break;
-        
-            case CLEAR:
-                ret = clear(stack);
-                
-                break;
-
-            case ADD:
-                ret = add(stack);
-                if (ret) {
-                    return 1;
-                }
-                break;
-            
-            case SUBTRACT:
-                ret = subtract(stack);
-                if (ret) {
-                    return 1;
-                }
-                break;
-
-            case MULTIPLY:
-                ret = multiply(stack);
-                if (ret) {
-                    return 1;
-                }
-                break;
-
-            case DIVIDE:
-                ret = divide(stack);
-                if (ret) {
-                    return 1;
-                }
-                break;
 
             case LOOP:
                 fread(&val, sizeof(int), 1, source);
@@ -122,39 +69,8 @@ int main(int argc, const char *argv[]) {
 
                 break;
 
-            case SWAP:
-                ret = swap(stack);
-                if (ret) {
-                    return 1;
-                }
-                break;
-            case DEC:
-                ret = dec(stack);
-                if (ret) {
-                    return 1;
-                }
-                break;
-
-            case INC:
-                ret = inc(stack);
-                if (ret) {
-                    return 1;
-                }
-                break;
-
-            case SIZE:
-                ret = size(stack);
-                
-                break;
-            
-            case DUPLICATE:
-                ret = duplicate(stack);
-                if (ret) {
-                    return 1;
-                }
-                break;
-
             default:
+                keywordArr[val](stack);
                 break;
         }
     }

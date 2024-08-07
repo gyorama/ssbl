@@ -21,9 +21,10 @@ enum keywords {
     INC,
     SIZE,
     DUPLICATE,
+    PRINT,
 };
 
-typedef bool (*Keyword)(int *stack);
+typedef bool (*Function)(int *stack);
 // Main things
 bool push(int *stack, int value);
 bool pop(int *stack);
@@ -46,3 +47,4 @@ bool ifStatement(int *stack, FILE *source, bool condition, bool ret);
 bool swap(int *stack);
 bool size(int *stack);
 bool duplicate(int *stack);
+bool print(int *stack);

@@ -6,6 +6,7 @@
 #include <stdint.h>
 
 #define MAX_INDEX 100
+typedef bool (*Function)(int *stack);
 
 inline bool push(int *stack, int value) {
     if (stack[0] > 100) {
@@ -28,7 +29,7 @@ inline bool pop(int *stack) {
 
 inline bool top(int *stack) {
     if (stack[0] < 1) {
-        puts("Not valid stack index");
+        puts("Not valid stack index to print out");
         return true;
     }
     printf("%d\n", stack[stack[0]]);
@@ -62,7 +63,7 @@ inline bool clear(int *stack) {
 
 inline bool add(int *stack) {
     if (stack[0] < 2) {
-        puts("Not enough arguments");
+        puts("Not enough values on the stack\nTry pushing something to the stack");
         return true;
     }
     int result = stack[stack[0]] + stack[stack[0]-1];
@@ -74,7 +75,7 @@ inline bool add(int *stack) {
 // That's literally add copypasted but with a -
 inline bool subtract(int *stack) {
     if (stack[0] < 2) {
-        puts("Not enough arguments");
+        puts("Not enough values on the stack\nTry pushing something to the stack");
         return true;
     }
     int result = stack[stack[0]] - stack[stack[0]-1];
@@ -85,7 +86,7 @@ inline bool subtract(int *stack) {
 
 inline bool divide(int *stack) {
     if (stack[0] < 2) {
-        puts("Not enough arguments");
+        puts("Not enough values on the stack\nTry pushing something to the stack");
         return true;
     }
     int result = stack[stack[0]] / stack[stack[0]-1]; // Only full divisions for now
@@ -96,7 +97,7 @@ inline bool divide(int *stack) {
 
 inline bool multiply(int *stack) {
     if (stack[0] < 2) {
-        puts("Not enough arguments");
+        puts("Not enough values on the stack\nTry pushing something to the stack");
         return true;
     }
     int result = stack[stack[0]] * stack[stack[0]-1]; // Only full divisions for now
@@ -107,7 +108,7 @@ inline bool multiply(int *stack) {
 
 inline bool dec(int *stack) {
     if (stack[0] < 1) {
-        puts("Not enough arguments");
+        puts("Not enough values on the stack\nTry pushing something to the stack");
         return true;
     }
     --stack[stack[0]];
@@ -116,7 +117,7 @@ inline bool dec(int *stack) {
 
 inline bool inc(int *stack) {
     if (stack[0] < 1) {
-        puts("Not enough arguments");
+        puts("Not enough values on the stack\nTry pushing something to the stack");
         return true;
     }
     ++stack[stack[0]];
@@ -301,9 +302,18 @@ inline bool size(int *stack) {
 
 inline bool duplicate(int *stack) {
     if (stack[0] < 1) {
-        puts("Not enough arguments");
+        puts("Not enough values on the stack.\nTry pushing something to the stack");
         return true;
     }
     push(stack, stack[stack[0]]);
+    return false;
+}
+
+inline bool print(int *stack) {
+    if (stack[0] < 1) {
+    	puts("Not valid stack index to print out");
+    	return true;
+    }
+    putchar(stack[stack[0]]);
     return false;
 }
