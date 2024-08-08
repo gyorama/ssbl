@@ -77,24 +77,17 @@ int main(int argc, const char *argv[]) {
             fwrite(&keyword, sizeof(int16_t), 1, target);
         } else if (strcasecmp(command, "times") == 0) {
             keyword = LOOP;
-            fscanf(source, "%s", valStr);
-            val = strtol(valStr, &endPtr, 10);
+            fscanf(source, "%d", &val);
             fwrite(&keyword, sizeof(int16_t), 1, target);
-            // Make sure this is a valid integer
-            if (*endPtr == '\0') {
-                fwrite(&val, sizeof(int), 1, target);
-            } else {
-                puts("Invalid integer");
-                return 1;
-            }
+            fwrite(&val, sizeof(int32_t), 1, target);
         } else if (strcasecmp(command, "end") == 0) {
             keyword = END;
             fwrite(&keyword, sizeof(int16_t), 1, target);
         } else if (strcasecmp(command, "if") == 0) {
             fscanf(source, "%s", valStr);
-            if (strcasecmp(valStr, "true") == 0 || strcasecmp(valStr, "1") == 0) {
+            if (strcasecmp(valStr, "true") == 0 || strcmp(valStr, "1") == 0) {
                 val = true;
-            } else if (strcasecmp(valStr, "false") == 0 || strcasecmp(valStr, "0") == 0) {
+            } else if (strcasecmp(valStr, "false") == 0 || strcmp(valStr, "0") == 0) {
                 val = false;
             } else {
                 puts("Only boolean conditions are supported now.");
