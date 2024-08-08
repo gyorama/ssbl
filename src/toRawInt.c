@@ -21,7 +21,7 @@ int main(int argc, const char *argv[]) {
     }
 
     char valStr[20];
-    int val;
+    int32_t val;
     char *endPtr;
     bool ret;
     char command[200];
@@ -30,26 +30,24 @@ int main(int argc, const char *argv[]) {
     enum keywords keyword;
 
     // Write ssbl signature so that the interpreter can't run random binary files
-    // What are the chances the 1st 9 bytes in a random file are the exact same as this one anyway
     fwrite(&magicFileSignature, sizeof(int8_t), 9, target);
 
     while (fscanf(source, "%s", command) != EOF) {
-
-        // This is atrocious
         if (strcasecmp(command, "push") == 0) {
             keyword = PUSH;
 
-            fscanf(source, "%s", valStr);
-            val = strtol(valStr, &endPtr, 10);
+            fscanf(source, "%d", &val);
+            fwrite(&keyword, sizeof(int16_t), 1, target);
+            fwrite(&val, sizeof(int32_t), 1, target);
+            // val = strtol(valStr, &endPtr, 10);
             
-            if (*endPtr == '\0') {
-                fwrite(&keyword, sizeof(int16_t), 1, target);
-                fwrite(&val, sizeof(int), 1, target);
-            } else {
-                puts("Invalid integer");
-                return 1;
-            }
-        // Code gets better from here
+            // if (*endPtr == '\0') {
+            //     fwrite(&keyword, sizeof(int16_t), 1, target);
+            //     fwrite(&val, sizeof(int), 1, target);
+            // } else {
+            //     puts("Invalid integer");
+            //     return 1;
+            // }
         } else if (strcasecmp(command, "pop") == 0) {
             keyword = POP;
             fwrite(&keyword, sizeof(int16_t), 1, target);

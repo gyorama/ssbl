@@ -65,12 +65,12 @@ int main(int argc, const char *argv[]) {
         } else if (keyword == IF) {
             fread(&val, sizeof(bool), 1, source);
 
-            ret = ifStatement(stack, source, keywordArr, val, ret);
+            ifStatement(stack, source, keywordArr, val, ret);
             
         } else if (keyword == LOOP) {
             fread(&val, sizeof(int32_t), 1, source);
 
-            ret = loop(stack, val, source, keywordArr);
+            loop(stack, val, source, keywordArr);
 
             if (ret) {
                 fclose(source);
@@ -81,7 +81,7 @@ int main(int argc, const char *argv[]) {
             continue;
         } else {
             // Every other function
-            ret = keywordArr[keyword](stack);
+            keywordArr[keyword](stack);
         }
     }
     fclose(source);
