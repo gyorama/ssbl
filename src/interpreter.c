@@ -28,7 +28,7 @@ int main(int argc, const char *argv[]) {
     int8_t magicFileSignature[9] = {0xAF, 0x00, 0xDD, 0xF0,
                                  0xAA, 0x55, 0xBA, 0xBE, 0x03};
     int8_t signatureCheck[9];
-    int16_t keyword;
+    uint8_t keyword;
     int32_t val;
     bool ret;
 
@@ -50,7 +50,7 @@ int main(int argc, const char *argv[]) {
         return 1;
     }
 
-    while (fread(&keyword, sizeof(int16_t), 1, source)) {
+    while (fread(&keyword, sizeof(uint8_t), 1, source)) {
         // Special cases
         if (keyword == PUSH) {
             fread(&val, sizeof(int32_t), 1, source);

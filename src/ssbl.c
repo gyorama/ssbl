@@ -125,7 +125,7 @@ bool loop(int *stack, int times, FILE *source, Function keywordArr[]) {
     int val;
     bool ret;
     
-    int16_t keyword;
+    uint8_t keyword;
     
     while (times != 0) {
         fseek(source, loopBeginning, SEEK_SET);
@@ -167,12 +167,12 @@ bool loop(int *stack, int times, FILE *source, Function keywordArr[]) {
 }
 
 bool ifStatement(int *stack, FILE *source, Function keywordArr[], bool condition, bool ret) {
-    int16_t keyword;
+    uint8_t keyword;
 
     if (condition == ret) {
         loop(stack, 1, source, keywordArr); // Reuse loop function because it works
     } else {
-        while (fread(&keyword, sizeof(int16_t), 1, source) && keyword != END) {
+        while (fread(&keyword, sizeof(uint8_t), 1, source) && keyword != END) {
             continue;
         }
     }
