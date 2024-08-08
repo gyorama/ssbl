@@ -26,6 +26,8 @@ bool pop(int *stack) {
     return false;
 };
 
+
+
 bool top(int *stack) {
     if (stack[0] < 1) {
         puts("Not valid stack index to print out");
@@ -57,6 +59,7 @@ bool clear(int *stack) {
     stack[0] = 0;
     return false;    
 }
+
 
 bool add(int *stack) {
     if (stack[0] < 2) {
@@ -184,7 +187,7 @@ bool swap(int *stack) {
         return true;
     }
     int temp = stack[stack[0]];
-    stack[stack[0]] = ++stack[stack[0]-1]; // I don't know why but this works
+    stack[stack[0]] = ++stack[stack[0]-1];
     stack[stack[0]-1] = temp;
     return false;
 }
@@ -203,6 +206,17 @@ bool duplicate(int *stack) {
     return false;
 }
 
+bool print(int *stack) {
+    if (stack[0] < 1) {
+        puts("Not enough values on the stack\nTry pushing something to the stack");
+        return true;
+    } else if (stack[stack[0]] >= UINT8_MAX) {
+        puts("Value too large, can't be converted to ASCII");
+        return true;
+    }
+    printf("%c\n", (char)stack[stack[0]]);
+    return false;
+}
 bool cmpEq0(int *stack) {
     if (stack[0] < 1) {
         puts("Not enough values on the stack\nTry pushing something to the stack");

@@ -34,9 +34,9 @@ int main(int argc, const char *argv[]) {
 
     // Array of functions that the language can do
     // Ignore "incompatible pointer" warnings, it's already handled
-    Function keywordArr[20] = {push, pop, top, isEmpty, isFull, clear, add,
+    Function keywordArr[] = {push, pop, top, isEmpty, isFull, clear, add,
                                subtract, multiply, divide, loop, ifStatement, swap,
-                               dec, inc, size, duplicate, cmpEq0, cmpL0, cmpG0};
+                               dec, inc, size, duplicate, print, cmpEq0, cmpL0, cmpG0};
 
     if (!source) {
         perror("Could not open file");
@@ -70,6 +70,10 @@ int main(int argc, const char *argv[]) {
         } else if (keyword == LOOP) {
             fread(&val, sizeof(int32_t), 1, source);
 
+            if (val == LAST_STACK_VAL) {
+                val = stack[stack[0]];
+            }
+
             loop(stack, val, source, keywordArr);
 
             if (ret) {
@@ -77,7 +81,7 @@ int main(int argc, const char *argv[]) {
                 perror("Err");
                 return 1;
             }
-        } else if (keyword == END) {
+        } else if (keyword == END || keyword == LAST_STACK_VAL) {
             continue;
         } else {
             // Every other function

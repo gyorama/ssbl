@@ -23,9 +23,11 @@ enum keywords {
     INC,
     SIZE,
     DUPLICATE,
+    PRINT,
     EQ_0,
     L_0,
     G_0,
+    LAST_STACK_VAL,
 };
 
 typedef bool (*Function)(int *stack);
@@ -51,6 +53,7 @@ bool ifStatement(int *stack, FILE *source, Function keywordArr[], bool condition
 bool swap(int *stack); // Swap 2 top stack values
 bool size(int *stack); // Print the size of the stack
 bool duplicate(int *stack); // Duplicate the top stack value
+bool print(int *stack);
 
 // 0 comparisons
 bool cmpEq0(int *stack); // Compare if top is equal to 0 

@@ -39,15 +39,6 @@ int main(int argc, const char *argv[]) {
             fscanf(source, "%d", &val);
             fwrite(&keyword, sizeof(uint8_t), 1, target);
             fwrite(&val, sizeof(int32_t), 1, target);
-            // val = strtol(valStr, &endPtr, 10);
-            
-            // if (*endPtr == '\0') {
-            //     fwrite(&keyword, sizeof(uint8_t), 1, target);
-            //     fwrite(&val, sizeof(int), 1, target);
-            // } else {
-            //     puts("Invalid integer");
-            //     return 1;
-            // }
         } else if (strcasecmp(command, "pop") == 0) {
             keyword = POP;
             fwrite(&keyword, sizeof(uint8_t), 1, target);
@@ -77,7 +68,19 @@ int main(int argc, const char *argv[]) {
             fwrite(&keyword, sizeof(uint8_t), 1, target);
         } else if (strcasecmp(command, "times") == 0) {
             keyword = LOOP;
-            fscanf(source, "%d", &val);
+            fscanf(source, "%s", &valStr);
+
+            if (strcmp(valStr, "_") == 0) {
+                val = LAST_STACK_VAL;
+            } else {
+                val = strtol(valStr, &endPtr, 10);
+            
+                if (*endPtr != '\0') {
+                    puts("Invalid integer");
+                    return 1;
+                }
+            }
+
             fwrite(&keyword, sizeof(uint8_t), 1, target);
             fwrite(&val, sizeof(int32_t), 1, target);
         } else if (strcasecmp(command, "end") == 0) {
@@ -122,6 +125,9 @@ int main(int argc, const char *argv[]) {
             fwrite(&keyword, sizeof(uint8_t), 1, target);
         } else if (strcasecmp(command, "G0") == 0) {
             keyword = G_0;
+            fwrite(&keyword, sizeof(uint8_t), 1, target);
+        } else if (strcasecmp(command, "prnt") == 0) {
+            keyword = PRINT;
             fwrite(&keyword, sizeof(uint8_t), 1, target);
         } else {
             printf("Unknown function '%s'", &command);
