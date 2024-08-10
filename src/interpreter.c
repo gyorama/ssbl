@@ -6,7 +6,7 @@
 #include <stdint.h>
 
 
-bool arrncmp(int8_t arr1[], int8_t arr2[], int size) {
+static bool arrncmp(int8_t arr1[], int8_t arr2[], int size) {
     for (int i = 0; i < size; i++) {
         if (arr1[i] != arr2[i]) {
             return false; // Arrays are different
@@ -32,11 +32,11 @@ int main(int argc, const char *argv[]) {
     int32_t val;
     bool ret;
 
-    // Array of functions that the language can do
-    // Ignore "incompatible pointer" warnings, it's already handled
-    Function keywordArr[] = {push, pop, top, isEmpty, isFull, clear, add,
-                               subtract, multiply, divide, loop, ifStatement, swap,
-                               dec, inc, size, duplicate, print, cmpEq0, cmpL0, cmpG0};
+    Function keywordArr[] = {
+        push, pop, top, isEmpty, isFull, clear, add,
+        subtract, multiply, divide, loop, ifStatement, swap,
+        dec, inc, size, duplicate, cmpEq0, cmpL0, cmpG0, mod,
+    };
 
     if (!source) {
         perror("Could not open file");
@@ -54,9 +54,7 @@ int main(int argc, const char *argv[]) {
         // Special cases
         if (keyword == PUSH) {
             fread(&val, sizeof(int32_t), 1, source);
-
             ret = push(stack, val);
-
             if (ret) {
                 fclose(source);
                 perror("Err");
@@ -64,25 +62,23 @@ int main(int argc, const char *argv[]) {
             }
         } else if (keyword == IF) {
             fread(&val, sizeof(bool), 1, source);
-
             ifStatement(stack, source, keywordArr, val, ret);
             
         } else if (keyword == LOOP) {
             fread(&val, sizeof(int32_t), 1, source);
-
             if (val == LAST_STACK_VAL) {
                 val = stack[stack[0]];
             }
-
             loop(stack, val, source, keywordArr);
-
             if (ret) {
                 fclose(source);
                 perror("Err");
                 return 1;
             }
+
         } else if (keyword == END || keyword == LAST_STACK_VAL) {
             continue;
+
         } else {
             // Every other function
             keywordArr[keyword](stack);

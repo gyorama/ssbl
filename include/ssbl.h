@@ -5,29 +5,18 @@
 #define MAX_INDEX 2048
 
 enum keywords {
-    PUSH = 0,
-    POP,
-    TOP,
-    IS_EMPTY,
-    IS_FULL,
-    CLEAR,
-    ADD,
-    SUBTRACT,
-    MULTIPLY,
-    DIVIDE,
-    LOOP,
-    END,
-    IF,
-    SWAP,
-    DEC,
-    INC,
-    SIZE,
-    DUPLICATE,
-    PRINT,
-    EQ_0,
-    L_0,
-    G_0,
-    LAST_STACK_VAL,
+    PUSH = 0, POP,
+    TOP, IS_EMPTY,
+    IS_FULL, CLEAR,
+    ADD, SUBTRACT,
+    MULTIPLY, DIVIDE,
+    LOOP, IF, 
+    SWAP, DEC,
+    INC, SIZE,
+    DUPLICATE, EQ_0,
+    L_0, G_0,
+    MOD, STR_PRT,
+    LAST_STACK_VAL, END,
 };
 
 typedef bool (*Function)(int *stack);
@@ -46,6 +35,7 @@ bool divide(int *stack);
 bool multiply(int *stack);
 bool dec(int *stack); // Decrement
 bool inc(int *stack); // Increment
+bool mod(int *stack);
 
 // Misc
 bool loop(int *stack, int times, FILE *source, Function keywordArr[]); // Repeat code inside `times` statement `int times` amount
@@ -53,7 +43,6 @@ bool ifStatement(int *stack, FILE *source, Function keywordArr[], bool condition
 bool swap(int *stack); // Swap 2 top stack values
 bool size(int *stack); // Print the size of the stack
 bool duplicate(int *stack); // Duplicate the top stack value
-bool print(int *stack);
 
 // 0 comparisons
 bool cmpEq0(int *stack); // Compare if top is equal to 0 

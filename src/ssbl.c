@@ -123,6 +123,17 @@ bool inc(int *stack) {
     return false;
 }
 
+bool mod(int *stack) {
+    if (stack[0] < 2) {
+        puts("Not enough values on the stack\nTry pushing something to the stack");
+        return true;
+    }
+    int result = stack[stack[0]] % stack[stack[0]-1];
+    stack[0] -= 2;
+    push(stack, result);
+    return false;
+}
+
 bool loop(int *stack, int times, FILE *source, Function keywordArr[]) {
     int loopBeginning = ftell(source);
     int val;
@@ -206,17 +217,6 @@ bool duplicate(int *stack) {
     return false;
 }
 
-bool print(int *stack) {
-    if (stack[0] < 1) {
-        puts("Not enough values on the stack\nTry pushing something to the stack");
-        return true;
-    } else if (stack[stack[0]] >= UINT8_MAX) {
-        puts("Value too large, can't be converted to ASCII");
-        return true;
-    }
-    printf("%c\n", (char)stack[stack[0]]);
-    return false;
-}
 bool cmpEq0(int *stack) {
     if (stack[0] < 1) {
         puts("Not enough values on the stack\nTry pushing something to the stack");
