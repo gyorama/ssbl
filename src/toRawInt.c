@@ -19,8 +19,6 @@ int main(int argc, const char *argv[]) {
         perror("Could not open file");
         return 1;
     }
-    // test
-
     char valStr[4096];
     int32_t val;
     char *endPtr;
