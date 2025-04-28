@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
+#include <errno.h>
 #include "../include/ssbl.h"
 
 
@@ -20,6 +21,7 @@ int main(int argc, const char *argv[]) {
         return 1;
     }
 
+    char* endptr;
     int16_t varArr[400];
     memset(varArr, INT16_MIN, sizeof(int16_t));
 
@@ -36,14 +38,26 @@ int main(int argc, const char *argv[]) {
         if (command[0] == '@') {
             printf("%s: function\n", cmdPtr);
             memcpy(word, cmdPtr, strlen(command)+1);
+
         } else if (command[0] == '#') {
             printf("%s: variable\n", cmdPtr);
-            if (atoi(cmdPtr) < 1) {
+            int8_t varInt = atoi(cmdPtr);
+            if (varInt < 1) {
                 puts("Variable index can't be less than 1\nVariable can't be named with text");
                 return 1;
             }
             memcpy(word, cmdPtr, strlen(command)+1);
+            if (varArr[varInt] != INT16_MIN) {
+                printf("Value of variable №%d: %d", varInt, varArr[varInt]);
+            }
         } else {
+            long value = strtol(command, &endptr, 10);
+
+            if (endptr == command) {
+                printf("Characters aren't allowed");
+            } else {
+
+            }
             printf("%s: value to %s\n", cmdPtr, word);
         }
         
