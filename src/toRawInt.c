@@ -20,8 +20,8 @@ int main(int argc, const char *argv[]) {
         return 1;
     }
     char command[200];
-    char *cmdPtr = command + 1;
-    char word = calloc(200, sizeof(char));
+    char *cmdPtr = command+1;
+    char *word = calloc(200, sizeof(char));
     uint8_t magicFileSignature[9] = {0xAF, 0x00, 0xDD, 0xF0,
                                     0xAA, 0x55, 0xBA, 0xBE, 0x03};
 
@@ -30,8 +30,15 @@ int main(int argc, const char *argv[]) {
 
     while (fscanf(source, "%s", command) != EOF) {
         if (command[0] == '@') {
-            printf("%s");
+            printf("%s: function\n", cmdPtr);
+            memcpy(word, command, strlen(command)+1);
+        } else if (command[0] == '#') {
+            printf("%s: variable\n", cmdPtr);
+            memcpy(word, command, strlen(command)+1);
+        } else {
+            printf("%s: value to %s\n", cmdPtr, word);
         }
+        
     }
 
     fclose(source);
